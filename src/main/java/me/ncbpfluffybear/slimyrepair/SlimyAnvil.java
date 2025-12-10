@@ -2,7 +2,6 @@ package me.ncbpfluffybear.slimyrepair;
 
 import io.github.thebusybiscuit.slimefun4.api.items.ItemHandler;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.RecipeDisplayItem;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
@@ -50,7 +49,7 @@ public class SlimyAnvil extends SlimefunItem implements RecipeDisplayItem {
 
             SlimefunItem sfBlock = BlockStorage.check(b);
 
-            if (sfBlock != null && sfBlock == SRItems.SLIMY_ANVIL.getItem()) {
+            if (sfBlock != null && sfBlock.getId().equals(SRItems.SLIMY_ANVIL.getItemId())) {
                 ItemStack item = p.getInventory().getItemInMainHand();
                 SlimefunItem sfItem = SlimefunItem.getByItem(item);
                 ItemMeta meta = item.getItemMeta();
@@ -68,11 +67,13 @@ public class SlimyAnvil extends SlimefunItem implements RecipeDisplayItem {
 
                         ItemStack repairItem = SlimyRepair.repairMap.get(sfItem).getFirstValue();
                         String itemName;
-                        if (repairItem instanceof SlimefunItemStack) {
+                        
+                        if (repairItem.hasItemMeta() && repairItem.getItemMeta().hasDisplayName()) {
                             itemName = repairItem.getItemMeta().getDisplayName();
                         } else {
                             itemName = toTitleCase(repairItem.getType().name().replace('_', ' '));
                         }
+
                         send(p, "&aThis item can be repaired!" +
                             "\n  &bRequires: &e" + itemName +
                             "\n  &bRepairs: &e" + SlimyRepair.repairMap.get(sfItem).getSecondValue() + " Durability" +
